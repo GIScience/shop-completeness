@@ -40,12 +40,16 @@ TabFactors <- read.csv2("TabFactors.csv")
 # academics: employees to social security contributions at the place of residence with an academic qualification per 100 inhabitants of working age (for 2017)
 # GDP: the gross domestic product (GDP) per person in employment [1000 €] (for 2016)
 
-# delete rows, asymptote = NA
-TabFactors <- TabFactors[-c(which(is.na(TabFactors$asymptote))),]
+
 TabFactors$completeness <- as.numeric(as.character(TabFactors$completeness))
 
 # define district type factor and factor levels
 TabFactors$districtTypeF <- factor(TabFactors$districtType, levels=c(3,2,1), labels = c("rural districts", "urban districts", "independent cities"))
+
+TabFactorsAll <- TabFactors
+TabFactorsAll$notSaturated <- is.na(TabFactorsAll$asymptote)
+# delete rows, asymptote = NA
+TabFactors <- TabFactors[-c(which(is.na(TabFactors$asymptote))),]
 
 ```
 
@@ -70,6 +74,8 @@ exp(coef(g))
 
 vif(g)
 ```
+
+## Adjust for overdispersion
 
 Use a negative binomial GLM to account for the overdisperion
 
@@ -176,6 +182,24 @@ summary(g)
 ```
 This would mean saturation goes down with unemployment rate and is higher in independent cities compared to rural districts.
 
+### Diagnostics
+```{r}
+plot(g, which=1:6, labels.id = TabFactors$district)
+```
+
+Nordsachsen is highly influential, characterized by a high cook's distance and a high leverage.
+
+### What if we leave out Nordsachsen?
+
+```{r}
+#TabFactors$district
+gPart <- glm.nb(asymptote ~ unemployments +  offset(log(avShops)),  data=TabFactors, subset= district != "Nordsachsen, rural district")
+
+## deviance, estimates and significance
+1-gPart$deviance/gPart$null.deviance
+summary(gPart)
+```
+
 
 # graphic representations
 ```{r}
@@ -195,4 +219,20 @@ ggplot(TabFactors, aes(x=districtTypeF, y=completeness, colour = districtTypeF))
   #stat_summary(fun.y=mean, geom="point", shape=23, size=2)+
   labs(title = "completeness distribution by district type", y = "completeness level [%]", x="")+ theme(legend.position = "none") +  theme(plot.title = element_text(size=10, face="bold")) + theme(axis.title.y=element_text(size=9)) + theme(legend.text = element_text(size = 9)) + theme(axis.text.y =  element_text(size = 7), axis.text.x =  element_text(size =9, colour="black"))+
   geom_dotplot(binaxis='y', stackdir='center',position=position_dodge(1), binwidth=0.5, colour = "Black")
+```
+
+# What districts are not saturated?
+These will be highly incomplete
+
+```{r}
+gSat <- glm(notSaturated ~ districtTypeF + unemployments + GDP, data=TabFactorsAll, family=binomial)
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- districtTypeF)
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- unemployments)
+summary(gSat)
+drop1(gSat)
+
 ```
