@@ -12,16 +12,17 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readr)
 library(MASS)
 library(ggplot2)
-library(VGAM)
-library(polycor)
+#library(VGAM)
+#library(polycor)
 library(plotly)
 library(tidyverse)
-library(stats)
+#library(stats)
 library(car)
+require(ggeffects)
 ```
 
 ```{r, include=FALSE}
-TabFactors <- read.csv2("C:/Users/Josephine/Desktop/shortpaper/TabFactors.csv")
+TabFactors <- read.csv2("TabFactors.csv")
 
 # populationDensity: inhabitants per km² (for 2018)
 # avShops: current number of retail stores as average value from 2018 to 2020
@@ -48,19 +49,133 @@ TabFactors$districtTypeF <- factor(TabFactors$districtType, levels=c(3,2,1), lab
 
 ```
 
+```{r}
+TabFactors$district <- gsub(pattern="\xf6", replacement = "ö", TabFactors$district)
+TabFactors$district <- gsub(pattern="\xe4", replacement = "ä", TabFactors$district)
+TabFactors$district <- gsub(pattern="\xdf", replacement = "ß", TabFactors$district)
+TabFactors$district <- gsub(pattern="\xfc", replacement = "ü", TabFactors$district)
+```
+
+
 # GLM
 ```{r}
-glm <- glm(asymptote ~ districtTypeF + GDP + unemployments + academics + offset(log(avShops)),  data=TabFactors, family=poisson)
+g <- glm(asymptote ~ districtTypeF + GDP + unemployments + academics + offset(log(avShops)),  data=TabFactors, family=poisson)
 
 ## deviance, estimates and significance
-1-glm$deviance/glm$null.deviance
-summary(glm)
-exp(coef(glm))
+1-g$deviance/g$null.deviance
+summary(g)
+exp(coef(g))
 
 ## VIF
 
-vif(glm)
+vif(g)
 ```
+
+Use a negative binomial GLM to account for the overdisperion
+
+```{r}
+g <- glm.nb(asymptote ~ districtTypeF + GDP + unemployments + academics + offset(log(avShops)),  data=TabFactors)
+
+## deviance, estimates and significance
+1-g$deviance/g$null.deviance
+summary(g)
+exp(coef(g))
+
+## VIF
+
+vif(g)
+```
+
+Need to simplify model:
+
+```{r}
+g <- update(g, ~. -academics)
+summary(g)
+vif(g)
+```
+```{r}
+drop1(g)
+```
+
+```{r}
+g <- update(g, ~. -GDP)
+summary(g)
+vif(g)
+1 - g$deviance / g$null.deviance
+```
+Compare with model with GDP instead of unemployment rate
+
+```{r}
+g2 <- glm.nb(formula = asymptote ~ districtTypeF + GDP + offset(log(avShops)), data = TabFactors, link = log)
+summary(g2)
+```
+Clearly worst, so we stick with g. Interaction?
+
+```{r}
+g2 <- glm.nb(formula = asymptote ~ districtTypeF * unemployments + offset(log(avShops)), data = TabFactors, link = log)
+summary(g2)
+```
+Nope.
+
+Quadratic effect?
+
+```{r}
+g2 <- glm.nb(formula = asymptote ~ districtTypeF + poly(unemployments,2) + offset(log(avShops)), data = TabFactors, link = log)
+summary(g2)
+```
+Then we would need to drop the district types
+
+
+```{r}
+g2 <- glm.nb(formula = asymptote ~  poly(unemployments,2) + offset(log(avShops)), data = TabFactors, link = log)
+summary(g2)
+```
+
+
+
+```{r}
+AIC(g)
+AIC(g2)
+```
+
+The model with only unemployment as a quadratic effect is (marginally) better than the one with district type and unemployment.
+
+```{r}
+ggplot(TabFactors, mapping= aes(x=unemployments, y=  asymptote, size= avShops)) + geom_point() + geom_smooth(method= "glm.nb", formula = y ~ poly(x,2) )
+```
+
+This means that - for the same amount of shops - the asymptote increases with unemployment before dropping if unemployment rate is above ~6.3. Effect on saturation is the other way around: saturation first decreases with unemployment rate before increasing again for higher unemployment rates.
+
+```{r}
+pred <- ggpredict(g2, terms="unemployments", condition= c(avShops=1600))
+#pred2 <- ggpredict(g2, terms="unemployments", condition= c(avShops=800))
+ggplot(pred, aes(x, predicted)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .1) +
+  xlab("Unemployment rate") + ylab("Asymptote")
+
+```
+
+However, it might be simply the case that more urban areas have also a higher unemployment rate:
+
+```{r}
+ggplot(TabFactors, aes(x=districtTypeF, y= unemployments)) + geom_violin()
+```
+
+Yes, indepentend cities seem to have a clearly higher unemployment rate.
+
+```{r}
+gUenmp <- lm(unemployments ~ districtTypeF, data= TabFactors)
+summary(gUenmp)
+```
+However, differences are not significant.
+Nevertheless, it might make more sense to use the marginally worse model with unemployment rate and district type.
+
+```{r}
+summary(g)
+```
+This would mean saturation goes down with unemployment rate and is higher in independent cities compared to rural districts.
+
 
 # graphic representations
 ```{r}
