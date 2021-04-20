@@ -1,0 +1,83 @@
+---
+title: "GLM shop completeness"
+author: "Josephine Brückner"
+date: "19 4 2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(MASS)
+library(ggplot2)
+library(VGAM)
+library(polycor)
+library(plotly)
+library(tidyverse)
+library(stats)
+library(car)
+```
+
+```{r, include=FALSE}
+TabFactors <- read.csv2("C:/Users/Josephine/Desktop/shortpaper/TabFactors.csv")
+
+# populationDensity: inhabitants per km² (for 2018)
+# avShops: current number of retail stores as average value from 2018 to 2020
+# asymptote: estimated asymptote via nonlinear regression
+# completeness: estimated completeness level [%]
+# func: best fit function (SSlogis = three parameter logistic function, SSfpl = four parameter logistic, SSasymp = asymptotic function, SSmicmen = Michaelis-Menten function)
+# RS:
+
+# factors:
+# district type: 
+# 1 = independent city
+# 2 = urban district
+# 3 = rural district
+# unemployments: rate of unemployed in the civilian labor force [%] (for 2017)
+# academics: employees to social security contributions at the place of residence with an academic qualification per 100 inhabitants of working age (for 2017)
+# GDP: the gross domestic product (GDP) per person in employment [1000 €] (for 2016)
+
+# delete rows, asymptote = NA
+TabFactors <- TabFactors[-c(which(is.na(TabFactors$asymptote))),]
+TabFactors$completeness <- as.numeric(as.character(TabFactors$completeness))
+
+# define district type factor and factor levels
+TabFactors$districtTypeF <- factor(TabFactors$districtType, levels=c(3,2,1), labels = c("rural districts", "urban districts", "independent cities"))
+
+```
+
+# GLM
+```{r}
+glm <- glm(asymptote ~ districtTypeF + GDP + unemployments + academics + offset(log(avShops)),  data=TabFactors, family=poisson)
+
+## deviance, estimates and significance
+1-glm$deviance/glm$null.deviance
+summary(glm)
+exp(coef(glm))
+
+## VIF
+
+vif(glm)
+```
+
+# graphic representations
+```{r}
+# diagram shops and estimated asymptote
+p1 <- ggplot(TabFactors, aes(y=avShops, x=asymptote, text=district)) + theme_minimal()  + labs(title="number of shops and asymptote") + xlab("asymptote") + ylab("number of shops") + 
+  geom_point(lwd=0.5, alpha=0.8, aes(colour=districtTypeF)) +
+  theme(plot.title = element_text(size=10, face = "bold"))+ theme(axis.title.y=element_text(size=9)) +theme(axis.title.x=element_text(size=9))+ theme(legend.text = element_text(size = 9)) + theme(axis.text.y =  element_text(size = 7), axis.text.x =  element_text(size =7)) +
+  #theme(legend.position = "bottom") +
+  theme(legend.title = element_text(size = 9, face = "bold")) 
+
+ggplotly(p1, Tooltip=c("district"))
+
+#violin plot
+ggplot(TabFactors, aes(x=districtTypeF, y=completeness, colour = districtTypeF)) + geom_violin(size=0.3) + 
+  scale_fill_brewer(palette="Dark2") + geom_boxplot(width=0.1, size = 0.3)+
+  #stat_summary(fun.y=median, geom="point", size=2, color="red")+
+  #stat_summary(fun.y=mean, geom="point", shape=23, size=2)+
+  labs(title = "completeness distribution by district type", y = "completeness level [%]", x="")+ theme(legend.position = "none") +  theme(plot.title = element_text(size=10, face="bold")) + theme(axis.title.y=element_text(size=9)) + theme(legend.text = element_text(size = 9)) + theme(axis.text.y =  element_text(size = 7), axis.text.x =  element_text(size =9, colour="black"))+
+  geom_dotplot(binaxis='y', stackdir='center',position=position_dodge(1), binwidth=0.5, colour = "Black")
+```
