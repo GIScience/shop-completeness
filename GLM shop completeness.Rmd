@@ -193,13 +193,28 @@ Nordsachsen is highly influential, characterized by a high cook's distance and a
 
 ```{r}
 #TabFactors$district
-gPart <- glm.nb(asymptote ~ unemployments +  offset(log(avShops)),  data=TabFactors, subset= district != "Nordsachsen, rural district")
+gPart <- glm.nb(asymptote ~ unemployments +  offset(log(avShops)),  data=TabFactors, subset= district != "Nordsachsen, rural district" )
 
 ## deviance, estimates and significance
 1-gPart$deviance/gPart$null.deviance
 summary(gPart)
 ```
+If we drop Görlitz as another district with high leverage, the relationship with unemployment holds. Is the fitting of Görlitz suspicious as well?
 
+```{r}
+gPart <- glm.nb(asymptote ~ unemployments +  offset(log(avShops)),  data=TabFactors, subset= district != "Nordsachsen, rural district" | district != "Görlitz, rural district")
+
+## deviance, estimates and significance
+1-gPart$deviance/gPart$null.deviance
+summary(gPart)
+```
+```{r}
+gPart <- glm.nb(asymptote ~ unemployments + districtTypeF + offset(log(avShops)),  data=TabFactors, subset= district != "Nordsachsen, rural district" | district != "Görlitz, rural district")
+
+## deviance, estimates and significance
+1-gPart$deviance/gPart$null.deviance
+summary(gPart)
+```
 
 # graphic representations
 ```{r}
