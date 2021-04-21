@@ -204,8 +204,9 @@ summary(gPart)
 # graphic representations
 ```{r}
 # diagram shops and estimated asymptote
-p1 <- ggplot(TabFactors, aes(y=avShops, x=asymptote, text=district)) + theme_minimal()  + labs(title="number of shops and asymptote") + xlab("asymptote") + ylab("number of shops") + 
+p1 <- ggplot(TabFactors, aes(x=avShops, y=asymptote, text=district)) + theme_minimal()  + labs(title="number of shops and asymptote") + ylab("asymptote") + xlab("number of shops") + 
   geom_point(lwd=0.5, alpha=0.8, aes(colour=districtTypeF)) +
+  geom_abline(slope=1, intercept = 0, col="grey", lty=2) +
   theme(plot.title = element_text(size=10, face = "bold"))+ theme(axis.title.y=element_text(size=9)) +theme(axis.title.x=element_text(size=9))+ theme(legend.text = element_text(size = 9)) + theme(axis.text.y =  element_text(size = 7), axis.text.x =  element_text(size =7)) +
   #theme(legend.position = "bottom") +
   theme(legend.title = element_text(size = 9, face = "bold")) 
@@ -232,6 +233,43 @@ gSat <- update(gSat, ~.- districtTypeF)
 summary(gSat)
 drop1(gSat)
 gSat <- update(gSat, ~.- unemployments)
+summary(gSat)
+drop1(gSat)
+
+```
+Even if we exclude Nordsachsen no significant relationship with predictors.
+
+```{r}
+gSat <- glm(notSaturated ~ districtTypeF + unemployments + GDP, data=TabFactorsAll, family=binomial, subset= district != "Nordsachsen, rural district")
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- districtTypeF)
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- GDP)
+summary(gSat)
+drop1(gSat)
+
+```
+
+Even if we label Nordsachsen as not saturated we still get no significant relationship with predictors.
+
+```{r}
+ggplot(TabFactorsAll, aes(x=completeness)) + geom_histogram()
+TabFactorsAll$notSaturated2 <- TabFactorsAll$notSaturated
+idx <- which(TabFactorsAll$completeness < 50)
+TabFactorsAll$notSaturated2[idx] <- TRUE
+```
+
+
+```{r}
+gSat <- glm(notSaturated2 ~ districtTypeF + unemployments + GDP, data=TabFactorsAll, family=binomial)
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- districtTypeF)
+summary(gSat)
+drop1(gSat)
+gSat <- update(gSat, ~.- GDP)
 summary(gSat)
 drop1(gSat)
 
