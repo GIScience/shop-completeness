@@ -1,0 +1,260 @@
+---
+title: "Companion to Assessing shop completeness in OpenStreetMap for two federalstates in Germany - non linear regression of OSM retail stores time series by varied selfstarting functions"
+author: ""
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+require(ggplot2)
+require(stats)
+require(nlstools)
+require(tidyverse)
+require(dplyr)
+```
+
+
+```{r, include=FALSE}
+load("../data/retailData.Rdata")
+```
+
+
+```{r, include=FALSE}
+RS <- as.character(c())
+district <- as.character(c())
+state <- as.character(c())
+avStores <- as.numeric(c()) # current number of OSM retail stores (average value during the last 2 years of the analysis period)
+
+#the three parameter logistic function:
+SSlogis_asymptote <- as.numeric(c()) # estimate asymptote
+SSlogis_Std.Error <- as.numeric(c()) # standard error asymptote
+SSlogis_ResErrorRel <- as.numeric(c()) #relativ residual standard error
+SSlogis_SlopeDev <- as.numeric(c()) #Slope Deviation
+
+#four parameter logistic function: 
+SSfpl_asymptote <- as.numeric(c()) # estimate asymptote
+SSfpl_Std.Error <- as.numeric(c()) # standard error asymptote
+SSfpl_ResErrorRel <- as.numeric(c()) #relativ residual standard error
+SSfpl_SlopeDev <- as.numeric(c()) #Slope Deviation
+
+#asymptotic function:
+SSasymp_asymptote <- as.numeric(c()) # estimate asymptote
+SSasymp_Std.Error <- as.numeric(c()) # standard error asymptote
+SSasymp_ResErrorRel <- as.numeric(c()) #relativ residual standard error
+SSasymp_SlopeDev <- as.numeric(c()) #Slope Deviation
+
+#rectangular hyperbola (Michaelis Menten) function:
+SSmicmen_asymptote <- as.numeric(c()) # estimate asymptote
+SSmicmen_Std.Error <- as.numeric(c()) # standard error asymptote
+SSmicmen_ResErrorRel <- as.numeric(c()) #relativ residual standard error
+SSmicmen_SlopeDev <- as.numeric(c()) #Slope Deviation
+
+nlsData <- data.frame(RS, district, state, avStores, SSlogis_asymptote, SSlogis_Std.Error, SSlogis_ResErrorRel, SSlogis_SlopeDev, SSfpl_asymptote, SSfpl_Std.Error, SSfpl_ResErrorRel, SSfpl_SlopeDev, SSasymp_asymptote, SSasymp_Std.Error, SSasymp_ResErrorRel, SSasymp_SlopeDev, SSmicmen_asymptote, SSmicmen_Std.Error, SSmicmen_ResErrorRel, SSmicmen_SlopeDev)
+```
+
+
+```{r, include=FALSE}
+StartDate <- ISOdate(2008,01,01,00) # start analysis period
+class(StartDate)
+intervall <- retailData$timestamp - StartDate 
+retailData$time <- as.numeric(intervall, units="days") + 1
+# + 1, set retailData$time[1] = 1 instead of 0
+head(retailData)
+```
+
+Create dataframe including criteria of all fits and further information:
+
+table parameter:
+
+avStores = current number of OSM retail stores (average value during the last 2 years of the analysis period)
+
+asymptote = estimated asymptote by nls approach
+
+Std.Error = standard error of the estimated asymptote
+
+ResErrorRel = relativ residual standard error (normalized by avStores)
+
+SlopeDev = relative deviation of the slope between the historic development and the fitted curve during the last 2 years of the analysis period
+
+
+```{r}
+RSselect <- as.character('')
+
+for(i in 1:nrow(retailData))
+{ 
+  if (RSselect != retailData$RS[i])
+  {
+    RSselect <- as.character(retailData$RS[i])
+    state <- as.character(retailData$state[i])
+    district <- as.character(retailData$district[i])
+    RS <- RSselect
+    districtData <- dplyr::filter(retailData, RS %in% RSselect)
+    avStores <- as.numeric(round(sum(districtData$retailStores[122:145])/24))
+    
+    
+# non-linear least squares by the three parameter logistic function SSlogis:
+    LogisModel <- nls(retailStores ~ SSlogis(time, Asym, xmid, scal), districtData)
+    #summary(LogisModel)
+    Asym <- (summary(LogisModel)$coefficients[1, 1]) 
+    xmid <- (summary(LogisModel)$coefficients[2, 1]) 
+    scal <- (summary(LogisModel)$coefficients[3, 1])
+    
+
+    SSlogis_asymptote <- as.numeric(round(summary(LogisModel)$coefficients[1, 1]))
+    SSlogis_Std.Error <- as.numeric(round(summary(LogisModel)$coefficients[1, 2]))
+    SSlogis_ResErrorRel <- as.numeric(round((summary(LogisModel)$sigma)/districtData$retailStores[145], digits = 2))
+    Asym <- (summary(LogisModel)$coefficients[1, 1]) #asymptote
+    xmid <- (summary(LogisModel)$coefficients[2, 1]) 
+    scal <- (summary(LogisModel)$coefficients[3, 1])
+    
+    
+       LogisFunc<-function(x){
+       y <- Asym/(1+exp((xmid-x)/scal))   
+       return(y)
+       } 
+          
+    # slope of the fit curve durging the last years of the analysis period
+    slopeSSlogis <- as.numeric(round((LogisFunc(4384) - LogisFunc(3685))/2))
+    
+   # slope of the historic development durging the last years of the analysis period 
+    slopeData <- as.numeric(round((districtData$retailStores[145]-districtData$retailStores[122])/2))
+    
+    SSlogis_SlopeDev <- slopeSSlogis - slopeData
+    
+    
+# non-linear least squares by the four parameter logistic function SSfpl: 
+   FplModel  <- tryCatch(nls(retailStores ~ SSfpl(time, A, B, xmid, scal), districtData),
+    error = function(e) paste0("NA"))
+    
+    if(FplModel[1] %in% "NA")
+    {    # add to dataframe
+    SSfpl_asymptote <- NA
+    SSfpl_Std.Error <- NA
+    SSfpl_ResErrorRel <- NA
+    SSfpl_SlopeDev <- NA
+      } else {
+    A <- (summary(FplModel)$coefficients[1, 1]) 
+    B <- (summary(FplModel)$coefficients[2, 1]) #asymptote
+    xmid <- (summary(FplModel)$coefficients[3, 1])
+    scal <- (summary(FplModel)$coefficients[4, 1])
+        
+    SSfpl_asymptote <- as.numeric(round(summary(FplModel)$coefficients[2, 1]))
+    SSfpl_Std.Error <- as.numeric(round(summary(FplModel)$coefficients[2, 2]))
+    SSfpl_ResErrorRel <- as.numeric(round((summary(FplModel)$sigma)/districtData$retailStores[145], digits = 2))
+
+      FplFunc<-function(x){
+      y <- A+(B-A)/(1+exp((xmid-x)/scal))   
+      return(y)
+    } 
+          
+    # slope of the fit curve durging the last years of the analysis period
+    slopeSSfpl <- as.numeric(round((FplFunc(4384) - FplFunc(3685))/2))
+    
+    # deviation of the slope of the real data and the fit curve via SSfpl
+    SSfpl_SlopeDev <- slopeSSfpl - slopeData
+      }   
+ 
+   # non-linear least squares by the asymptotic function SSasymp:
+    AsympModel <- tryCatch(nls(retailStores ~ SSasymp(time, Asym, R0, lrc), data=districtData),  error = function(e) paste0("NA"))
+    
+    if(AsympModel[1] %in% "NA")
+    {   
+    SSasymp_asymptote <- NA
+    SSasymp_Std.Error <- NA
+    SSasymp_ResErrorRel <- NA
+    SSasymp_SlopeDev <- NA
+      } else {
+    Asym <- (summary(AsympModel)$coefficients[1, 1]) #Asymptote
+    R0 <- (summary(AsympModel)$coefficients[2, 1])
+    lrc <- (summary(AsympModel)$coefficients[3, 1])
+
+    SSasymp_asymptote <- as.numeric(round(summary(AsympModel)$coefficients[1, 1]))
+    SSasymp_Std.Error <- as.numeric(round(summary(AsympModel)$coefficients[1, 2]))
+    SSasymp_ResErrorRel <- as.numeric(round((summary(AsympModel)$sigma)/districtData$retailStores[145], digits = 2))
+
+    AsympFunc<-function(x){
+      y <- Asym+(R0-Asym)*exp(-exp(lrc)*x)   
+      return(y)
+    } 
+          
+    # slope of the fit curve durging the last years of the analysis period
+    slopeSSasymp <- as.numeric(round((AsympFunc(4384) - AsympFunc(3685))/2))
+    
+    
+    # deviation of the slope of the real data and the fit curve via SSasymp
+    SSasymp_SlopeDev <- slopeSSasymp - slopeData
+      }   
+    
+    
+       # non-linear least squares by the rectangular hyperbola (Michaelis Menten) function SSmicmen
+      MicmenModel  <- tryCatch(nls(retailStores ~ SSmicmen(time, Vm, K), data=districtData),
+    error = function(e) paste0("NA"))
+    
+    if(MicmenModel[1] %in% "NA")
+    {   
+    SSmicmen_asymptote <- NA
+    SSmicmen_Std.Error <- NA
+    SSmicmen_ResErrorRel <- NA
+    SSmicmen_SlopeDev <- NA
+      } else {
+    Vm <- (summary(MicmenModel)$coefficients[1, 1]) #Asymptote
+    K <- (summary(MicmenModel)$coefficients[2, 1])
+
+    SSmicmen_asymptote <- as.numeric(round(summary(MicmenModel)$coefficients[1, 1]))
+    SSmicmen_Std.Error <- as.numeric(round(summary(MicmenModel)$coefficients[1, 2]))
+    SSmicmen_ResErrorRel <- as.numeric(round((summary(MicmenModel)$sigma)/districtData$retailStores[145], digits = 2))
+
+     MicmenFunc<-function(x){
+      y <- Vm*x/(K+x)   
+      return(y)
+    } 
+          
+    # slope of the fit curve during the last years of the analysis period
+    slopeSSmicmen <- as.numeric(round((MicmenFunc(4384) - MicmenFunc(3685))/2))
+    
+    
+    # deviation of the slope of the real data and the fit curve via SSmicmen
+    SSmicmen_SlopeDev <- slopeSSmicmen - slopeData
+      }    
+      
+    newFrame <- data.frame(RS, district, state, avStores, SSlogis_asymptote, SSlogis_Std.Error, SSlogis_ResErrorRel, SSlogis_SlopeDev, SSfpl_asymptote, SSfpl_Std.Error, SSfpl_ResErrorRel, SSfpl_SlopeDev, SSasymp_asymptote, SSasymp_Std.Error, SSasymp_ResErrorRel, SSasymp_SlopeDev, SSmicmen_asymptote, SSmicmen_Std.Error, SSmicmen_ResErrorRel, SSmicmen_SlopeDev)
+    
+    nlsData <- dplyr::bind_rows(nlsData, newFrame)
+  } }
+
+```
+
+
+
+```{r}
+print(nlsData)
+```
+
+A few overview plots about the results
+
+```{r, fig.height=9}
+ggplot(nlsData, aes(x=district, y=SSlogis_asymptote)) + geom_point() + coord_flip()
+```
+
+```{r, fig.height=9}
+ggplot(nlsData, aes(x=district, y=SSfpl_asymptote)) + geom_point() + coord_flip()
+```
+
+```{r, fig.height=9}
+ggplot(nlsData, aes(x=district, y=SSasymp_asymptote)) + geom_point() + coord_flip()
+```
+
+```{r, fig.height=9}
+ggplot(nlsData, aes(x=district, y=SSmicmen_asymptote)) + geom_point() + coord_flip() 
+```
+
+```{r, fig.height=9}
+ggplot(nlsData, aes(x=district, y=avStores)) + geom_point() + coord_flip() 
+```
+
+```{r, include=FALSE}
+# export and serialize results
+save(nlsData, file = "nlsData.Rdata")
+write.table(nlsData, file = "nlsData.csv",sep="", dec=".", row.names = FALSE)
+```
