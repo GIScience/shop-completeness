@@ -1,0 +1,58 @@
+district;populationDensity;avShops;asymptote;completeness;func;state;RS;districtType;unemployments;academics;GDP;population
+Alb-Donau-Kreis, rural district;143;543;585;93;Logis;Baden-Württemberg;8425;3;3;8;75;196047
+Baden-Baden, urban district;390;198;217;91;Logis;Baden-Württemberg;8211;2;5;10;69;55123
+Biberach, rural district;141;468;650;72;Micmen;Baden-Württemberg;8426;3;2,4;7,9;88,1;199742
+Böblingen, urban district;631;NA;NA;NA;NA;Baden-Württemberg;8115;2;3,1;13;108,4;391640
+Bodenseekreis, urban district;323;NA;NA;NA;NA;Baden-Württemberg;8435;2;3;12;85;216227
+Breisgau-Hochschwarzwald, urban district;190;1067;1446;74;Fpl;Baden-Württemberg;8315;2;3;9;63;262795
+Calw,urban district;197;457;470;97;Asymp;Baden-Württemberg;8235;2;3;7;66;158397
+Emmendingen, urban district;242;814;860;95;Fpl;Baden-Württemberg;8316;2;3;7;66;165383
+Enzkreis, urban district;346;570;641;89;Micmen;Baden-Württemberg;8236;2;3;8;69;198905
+Esslingen, urban district;830;NA;NA;NA;NA;Baden-Württemberg;8116;2;3;12;75;533859
+Freiburg im Breisgau, independent city;1500;NA;NA;NA;NA;Baden-Württemberg;8311;1;5,3;16,4;65,2;230241
+Freudenstadt, rural district;135;349;372;94;Logis;Baden-Württemberg;8237;3;3;6;69;117935
+Göppingen, urban district;399;811;1221;66;Micmen;Baden-Württemberg;8117;2;4;7;70;257253
+Heidelberg, independent city;1475;NA;NA;NA;NA;Baden-Württemberg;8221;1;4;19;70;160355
+Heidenheim, urban district;210;434;480;90;Asymp;Baden-Württemberg;8135;2;5;8;69;132472
+Heilbronn, urban district;310;627;813;77;Micmen;Baden-Württemberg;8121;2;3;8;93;125960
+Heilbronn, independent city;1253;1065;1102;97;Asymp;Baden-Württemberg;8125;1;5;10;66;343068
+Hohenlohekreis, rural district;143;264;332;80;Logis;Baden-Württemberg;8126;3;3;7;74;112010
+Karlsruhe, urban district;408;1607;1952;82;Logis;Baden-Württemberg;8212;2;3;9;76;313092
+Karlsruhe, indepedent city;1799;1600;1996;80;Asymp;Baden-Württemberg;8215;1;5;16;83;444232
+Konstanz, urban district;347;NA;NA;NA;NA;Baden-Württemberg;8335;2;3,4;8,7;63,6;285325
+Lörrach, urban district;283;678;841;81;Logis;Baden-Württemberg;8336;2;3;5;68;228639
+Ludwigsburg, urban district;790;1911;2260;85;Logis;Baden-Württemberg;8118;2;3,3;12,3;91,1;543984
+Main-Tauber-Kreis, rural district;101;499;506;99;Fpl;Baden-Württemberg;8128;3;3;6;64;132321
+Mannheim, independent city;2125;2643;2643;100;Fpl;Baden-Württemberg;8222;1;5;13;81;309370
+Neckar-Odenwald-Kreis, rural district;127;256;258;99;Logis;Baden-Württemberg;8225;3;4;6;65;143535
+Ortenaukreis, urban district;229;NA;NA;NA;NA;Baden-Württemberg;8317;2;3,2;6,3;68,5;429479
+Ostalbkreis, urban district;207;1119;1512;74;Asymp;Baden-Württemberg;8136;2;3;8;75;314002
+Pforzheim, independent city;1267;NA;NA;NA;NA;Baden-Württemberg;8231;1;6;7;65;125542
+Rastatt, urban district;312;657;769;85;Logis;Baden-Württemberg;8216;2;3;7;82;231018
+Ravensburg, urban district;174;NA;NA;NA;Asymp;Baden-Württemberg;8436;2;3;9;70;284285
+Rems-Murr-Kreis, urban district;495;1259;1526;83;Asymp;Baden-Württemberg;8119;2;3;10;70;426158
+Reutlingen, urban district;262;1162;1252;93;Logis;Baden-Württemberg;8415;2;4;10;72;286748
+Rhein-Neckar-Kreis, urban district;515;2377;2726;87;Logis;Baden-Württemberg;8226;2;4;11;77;547625
+Rottweil, urban district;180;484;603;80;Asymp;Baden-Württemberg;8325;2;3;6;76;139455
+Schwäbisch Hall, rural district;131;530;634;84;Asymp;Baden-Württemberg;8127;3;3;7;71;195861
+Schwarzwald-Baar-Kreis, urban district;206;841;857;98;Asymp;Baden-Württemberg;8326;2;3;7;65;212381
+Sigmaringen, rural district;108;541;630;86;Fpl;Baden-Württemberg;8437;3;3;6;67;130873
+Stuttgart, independent city;3052;2844;3188;89;Logis;Baden-Württemberg;8111;1;5;19;99;634830
+Tübingen, urban district;435;1002;1089;92;Logis;Baden-Württemberg;8416;2;3;15;65;227331
+Tuttlingen, urban district;190;390;402;97;Fpl;Baden-Württemberg;8327;2;3;6;74;140152
+Ulm, independent city;1058;809;828;98;Logis;Baden-Württemberg;8421;1;4;16;76;126329
+Waldshut, rural district;150;721;789;91;Logis;Baden-Württemberg;8337;3;3;4;65;170619
+Zollernalbkreis, urban district;205;380;428;89;Micmen;Baden-Württemberg;8417;2;3;6;68;188935
+Bautzen, rural district;126;NA;NA;NA;NA;Sachsen;14625;3;6;9;52;300880
+Chemnitz, independent city;1117;1087;1305;83;Fpl;Sachsen;14511;1;8;13;58;247237
+Dresden, independent city;1678;3014;3218;94;Fpl;Sachsen;14612;1;7;19;64;554649
+Erzgebirgskreis, urban district;186;1524;1877;81;Asymp;Sachsen;14521;2;5;7;50;337696
+Görlitz, rural district;122;1026;1193;86;Asymp;Sachsen;14626;3;9;8;57;254894
+Leipzig, independent city;1954;NA;NA;Na;NA;Sachsen;14713;1;8;16;61;257763
+Leipzig, rural district;156;NA;NA;NA;NA;Sachsen;14729;3;6;9;64;587857
+Meißen, rural district;167;1470;1828;80;Logis;Sachsen;14627;3;7;10;58;242165
+Mittelsachsen, rural district;146;1678;1789;94;Fpl;Sachsen;14522;3;6;9;57;306185
+Nordsachsen, rural district;98;620;1466;42;Asymp;Sachsen;14730;3;8;7;55;197673
+Sächsische Schweiz-Osterzgebirge, rural district;148;1316;1355;97;Logis;Sachsen;14628;3;6;9;53;245611
+Vogtlandkreis, rural district;163;NA;NA;NA;Asymp;Sachsen;14523;3;6;8;53;227796
+Zwickau, urban district;337;1597;1979;81;Logis;Sachsen;14524;2;6;9;61;317531
