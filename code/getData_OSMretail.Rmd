@@ -1,0 +1,219 @@
+---
+title: "Companion to Assessing shop completeness in OpenStreetMap for two federalstates in Germany - Query OSM Retail stores in Baden-Württemberg and Saxony"
+author: ""
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+```{r setup, include=FALSE}
+# packages with need to be installed (once) with install.packages("httr") etc.
+require(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(readtext)
+library(rapiclient)
+require(RCurl)
+require(sf)
+require(geojsonsf)
+#require(geojsonR)
+require(tmap)
+require(tmaptools)
+library(rgdal)
+require(geojsonio)
+require(geojson)
+#require(osmdata)
+require(rnaturalearth)
+require(tidyverse)
+library(lubridate)
+```
+
+# Function definitions
+
+Helper function to derive data via the ohsome API and return them as *sf* objects.
+
+```{r}
+getOsomeStat <- function(uri, valueFieldName="value", ...)
+{
+  results <- postForm(uri, binary=FALSE, .encoding = "utf-8", ...)
+  
+  #browser()
+  resultList <- RJSONIO::fromJSON(results, simplify = TRUE)
+  resultsDf <- data.frame(do.call("rbind", (resultList$result)))
+  # make sure the right data types are used
+  # for users we have  fromTimestamp  and  toTimestamp fields, not timestampe
+  if(length(grep(x=names(resultsDf), pattern = "timestamp"))> 0)
+  {
+    resultsDf$timestamp <- parse_datetime( as.character(resultsDf$timestamp))  
+  }
+  if(length(grep(x=names(resultsDf), pattern = "fromTimestamp"))> 0)
+  {
+    resultsDf$fromTimestamp <- parse_datetime( as.character(resultsDf$fromTimestamp))  
+  }
+  if(length(grep(x=names(resultsDf), pattern = "toTimestamp"))> 0)
+  {
+    resultsDf$toTimestamp <- parse_datetime( as.character(resultsDf$toTimestamp))  
+  }
+  resultsDf[valueFieldName] <- parse_number( as.character(resultsDf$value))
+  
+  return(resultsDf)
+}
+```
+# Load shapefile with admin boundaries
+
+```{r, include=FALSE}
+kreisSf <- st_read(dsn ="../data/VG250_shapes", layer = "VG250_KRS") kreisSf$SN_L <- as.numeric(as.character(kreisSf$SN_L))
+kreisSf <- filter(kreisSf,SN_L %in% c("8", "14") )
+state <- as.character(c("Baden-Württemberg", "Saxony"))
+SN_L <- as.numeric(c(8, 14))
+df <- data.frame(state, SN_L)
+kreisSf <- full_join(kreisSf, df, by="SN_L")
+kreisSf$RS <- as.numeric(as.character(kreisSf$RS))
+
+districtTypes <- read.csv2("../data/districtTypes2017inkar.csv")
+districtTypes$RS <- as.numeric(as.character(districtTypes$RS))
+districtTypes $districtTypeNr <- as.numeric(as.character(districtTypes$districtTypeNr))
+kreisSf <- left_join(kreisSf, districtTypes , by="RS")
+districtTypes$RS <- as.numeric(as.character(districtTypes$RS))
+
+kreisSf$area <- st_area(kreisSf)
+```
+
+Data need to be transformed into geographic coordinates
+
+```{r, include=FALSE}
+kreisSfwgs84 <-st_transform(kreisSf, crs = 4326)
+```
+
+```{r, include=FALSE}
+tm_shape(kreisSfwgs84) + tm_borders()
+```
+
+Some error checking... only Konstanz consists of two rows with the same RS_0
+
+```{r, include=FALSE}
+#View(kreisSf_BW)
+length(unique(kreisSf$RS_0))
+nrow(kreisSf)
+xtabs(~ RS_0, data=kreisSf )
+idx <- which(kreisSf$RS_0 == "083350000000")
+kreisSf[idx,]
+```
+
+
+Dissolve polygons based on Kreisname (for Konstanz, Leipzig, Karlsruhe and Heilbronn there were several Polygons) - Kreisname (GEN) is problematic since not unique e.g. for Heilbronn, Karlsruhe, Leipzig... 
+
+```{r, include=FALSE}
+# history: Used GEN before, now switched to RS_0
+kreisSfwgs84_dissolved <- kreisSfwgs84 %>% group_by(RS_0) %>% summarize(area= sum(area))
+```
+
+Join info on GEN and state
+
+```{r, include=FALSE}
+addOnInfo <- st_drop_geometry(kreisSfwgs84) %>% select(GEN, RS_0, state, BEZ,  NUTS, districtType)
+kreisSfwgs84_dissolved <- merge(kreisSfwgs84_dissolved, addOnInfo, by="RS_0")
+```
+
+Test plot of dissolved districts.
+
+```{r}
+tm_shape(kreisSfwgs84_dissolved) + tm_polygons(col="districtType")
+```
+
+
+# Get count statistics via ohsome
+
+The following values for the key shop were used.
+
+"shop" - values representing retail stores: "alcohol", "bakery", "beverages, butcher", "cheese", "chocolate", "coffee", "confectionery", "convenience", "dairy", "deli", "frozen_food", "greengrocer", "health_food", "ice_cream", "organic", "pasta", "pastry", "seafood", "spices", "tea", "wine", "water", "department_store", "general", "kiosk", "mall", "supermarket", "baby_goods", "bag", "boutique", "clothes", "fabric", "fashion_accessories", "jewelry", "leather", "sewing", "shoes", "tailor", "watches", "charity", "second_hand", "variety_store", "chemist", "cosmetics", "erotic", "hairdresser_supply", "hearing_aids", "herbalist", "medical_supply", "nutrition_supplements", "optician", "perfumery", "agrarian", "appliance", "bathroom_furnishing", "doityourself", "electrical", "energy", "fireplace", "florist", "garden_centre", "garden_furniture", "gas", "hardware", "houseware", "paint", "security", "trade", "windows", "antiques", "bed", "candles", "carpet", "curtain", "doors", "flooring", "furniture", "interior_decoration", "kitchen, lamps", "tiles", "window_blind", "computer", "robot", "electronics", "hifi", "mobile_phone", "radiotechnics", "vacuum_cleaner", "Atv", "bicycle", "boat", "car", "car_parts", "caravan", "fuel", "fishing", "free_flying", "golf", "hunting", "jetski", "motorcycle", "outdoor", "scuba_diving", "ski", "snowmobile", "sports", "swimming_pool", "trailer", "tyres", "art", "collector", "craft", "frame", "games", "model", "music", "musical_instrument", "camera", "trophy", "video", "video_games", "anime", "books", "gift", "lottery", "newsagent", "stationery", "ticket", "cannabis", "e-cigarette", "funeral_directors", "laundry", "party", "pet", "pest_control", "pest_control", "pyrotechnics", "religion", "tobacco", "toys", "travel_agency", "weapons", "outpost", "yes", "beauty", "car_repair", "copyshop", "dry_cleaning", "farm", "glaziery", "hairdresser", "locksmith", "massage", "pet_grooming", "photo", "tailor", "tattoo"
+
+"shop" - values representing no retail stores: "bookmaker", "money_lender", "pawnbroker", "storage_rental", "vacant"
+
+Query data for each district and store results in  data.frame.
+
+```{r, warning=FALSE, message= FALSE}
+ theValues <- c("bookmaker", "money_lender", "pawnbroker", "storage_rental", "vacant")
+shopData <- NULL
+for(i in 1:nrow(kreisSfwgs84_dissolved))
+{
+  aKreisSf <- kreisSfwgs84_dissolved[i,]
+  aKreisGeoJ <- sf_geojson(aKreisSf)
+  res <- getOsomeStat(uri = "https://api.ohsome.org/v1/elements/count/", bpolys = aKreisGeoJ, keys = "shop", time = "2008-01-01/2020-01-01/P1M", types="node", valueFieldName = "countShopTotal")
+  res$district<- aKreisSf$GEN.x
+  res$RS<- aKreisSf$RS_0
+  res$state <- aKreisSf$state.x
+  res$area <- aKreisSf$area
+  res$NUTS <- aKreisSf$NUTS.x
+  #loop over the values and count the number of elements for that shop
+  # also add them to the res data.frame/tibble
+  for(aValue in theValues)
+  {
+    valueFieldName= paste0("count_", aValue)
+    resSingelShop <- getOsomeStat(uri = "https://api.ohsome.org/v1/elements/count/", bpolys = aKreisGeoJ, keys = "shop", time = "2008-01-01/2020-01-01/P1M", types="node", values = aValue, valueFieldName = valueFieldName)
+    res[,valueFieldName] <- resSingelShop[,valueFieldName]
+  }
+  if(is.null(shopData))
+  {
+    shopData <- res
+  } else {
+    shopData <- dplyr::bind_rows(shopData, res)  
+  }
+  
+}
+
+head(shopData)
+
+```
+
+For multi-polygons numbers would need to be added - this is not necessary here  since multi-polygones have been merged before).
+
+"amenity" - values representing retail stores:"fuel", "pharmacy"
+
+```{r, warning=FALSE, message= FALSE}
+ theValues <- c("fuel", "pharmacy")
+amenityData <- NULL
+for(i in 1:nrow(kreisSfwgs84_dissolved))
+{
+  aKreisSf <- kreisSfwgs84_dissolved[i,]
+  aKreisGeoJ <- sf_geojson(aKreisSf)
+  res <- getOsomeStat(uri = "https://api.ohsome.org/v1/elements/count/", bpolys = aKreisGeoJ, keys = "amenity", time = "2008-01-01/2020-01-01/P1M", types="node", valueFieldName = "countamenityTotal")
+  res$district<- aKreisSf$GEN.x
+  res$RS<- aKreisSf$RS_0
+  res$state <- aKreisSf$state.x
+  res$area <- aKreisSf$area
+  res$NUTS <- aKreisSf$NUTS.x
+  #loop over the values and count the number of elements for that amenity  # also add them to the res data.frame/tibble
+  for(aValue in theValues)
+  {
+    valueFieldName= paste0("count_", aValue)
+    resSingelamenity <- getOsomeStat(uri = "https://api.ohsome.org/v1/elements/count/", bpolys = aKreisGeoJ, keys = "amenity", time = "2008-01-01/2020-01-01/P1M", types="node", values = aValue, valueFieldName = valueFieldName)
+    res[,valueFieldName] <- resSingelamenity[,valueFieldName]
+  }
+  if(is.null(amenityData))
+  {
+    amenityData <- res
+  } else {
+    amenityData <- dplyr::bind_rows(amenityData, res)  
+  }
+  
+}
+
+head(amenityData)
+
+```
+
+
+Get number of retail stores:
+We compute the number of retail stores tagged as "shop" by subtraction of the number of shops, that representing no retail stores from the total number of shops.
+The total number of retail stores is the sum of retail stores tagged "amenity" and of retail stores tagged "shop".
+
+```{r, warning=FALSE, message= FALSE}
+amenitySelect <- select(amenityData, count_fuel, count_pharmacy, RS, timestamp)
+retailData <- dplyr::left_join(shopData, amenitySelect, by = c("RS", "timestamp"))
+retailData <- mutate(retailData, retailStores = countShopTotal - count_bookmaker - count_money_lender - count_pawnbroker - count_storage_rental - count_vacant +count_fuel + count_pharmacy)
+
+retailData <- retailData %>% select(timestamp, district, RS, state, area, NUTS, retailStores)
+
+View(retailData)
+save(retailData, file = "../data/retailData.Rdata")
+write.table(retailData, file = "../data/retailData.csv", sep=";", row.names = FALSE)
+```
