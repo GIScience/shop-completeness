@@ -1,0 +1,402 @@
+RS;district;districtTypeNr;districtType
+1002;Kiel, Stadt;1;independent city
+1003;Lübeck, Stadt;1;independent city
+2000;Hamburg, Stadt;1;independent city
+3101;Braunschweig, Stadt;1;independent city
+3102;Salzgitter, Stadt;1;independent city
+3103;Wolfsburg, Stadt;1;independent city
+3403;Oldenburg (Oldenburg), Stadt;1;independent city
+3404;Osnabrück, Stadt;1;independent city
+4011;Bremen, Stadt;1;independent city
+4012;Bremerhaven, Stadt;1;independent city
+5111;Düsseldorf, Stadt;1;independent city
+5112;Duisburg, Stadt;1;independent city
+5113;Essen, Stadt;1;independent city
+5114;Krefeld, Stadt;1;independent city
+5116;Mönchengladbach, Stadt;1;independent city
+5117;Mülheim an der Ruhr, Stadt;1;independent city
+5119;Oberhausen, Stadt;1;independent city
+5120;Remscheid, Stadt;1;independent city
+5122;Solingen, Stadt;1;independent city
+5124;Wuppertal, Stadt;1;independent city
+5314;Bonn, Stadt;1;independent city
+5315;Köln, Stadt;1;independent city
+5316;Leverkusen, Stadt;1;independent city
+5512;Bottrop, Stadt;1;independent city
+5513;Gelsenkirchen, Stadt;1;independent city
+5515;Münster, Stadt;1;independent city
+5711;Bielefeld, Stadt;1;independent city
+5911;Bochum, Stadt;1;independent city
+5913;Dortmund, Stadt;1;independent city
+5914;Hagen, Stadt;1;independent city
+5915;Hamm, Stadt;1;independent city
+5916;Herne, Stadt;1;independent city
+6411;Darmstadt, Stadt;1;independent city
+6412;Frankfurt am Main, Stadt;1;independent city
+6413;Offenbach am Main, Stadt;1;independent city
+6414;Wiesbaden, Stadt;1;independent city
+6611;Kassel, Stadt;1;independent city
+7111;Koblenz, Stadt;1;independent city
+7211;Trier, Stadt;1;independent city
+7314;Ludwigshafen am Rhein, Stadt;1;independent city
+7315;Mainz, Stadt;1;independent city
+8111;Stuttgart, Stadt;1;independent city
+8121;Heilbronn, Stadt;1;independent city
+8212;Karlsruhe, Stadt;1;independent city
+8221;Heidelberg, Stadt;1;independent city
+8222;Mannheim, Stadt;1;independent city
+8231;Pforzheim, Stadt;1;independent city
+8311;Freiburg im Breisgau, Stadt;1;independent city
+8421;Ulm, Stadt;1;independent city
+9161;Ingolstadt, Stadt;1;independent city
+9162;München, Stadt;1;independent city
+9362;Regensburg, Stadt;1;independent city
+9562;Erlangen, Stadt;1;independent city
+9563;Fürth, Stadt;1;independent city
+9564;Nürnberg, Stadt;1;independent city
+9663;Würzburg, Stadt;1;independent city
+9761;Augsburg, Stadt;1;independent city
+11000;Berlin, Stadt;1;independent city
+12054;Potsdam, Stadt;1;independent city
+13003;Rostock, Stadt;1;independent city
+14511;Chemnitz, Stadt;1;independent city
+14612;Dresden, Stadt;1;independent city
+14713;Leipzig, Stadt;1;independent city
+15002;Halle (Saale), Stadt;1;independent city
+15003;Magdeburg, Stadt;1;independent city
+16051;Erfurt, Stadt;1;independent city
+16053;Jena, Stadt;1;independent city
+1056;Pinneberg;2;urban district
+1062;Stormarn;2;urban district
+3157;Peine;2;urban district
+3159;Göttingen;2;urban district
+3241;Region Hannover;2;urban district
+3254;Hildesheim;2;urban district
+3257;Schaumburg;2;urban district
+3353;Harburg;2;urban district
+3356;Osterholz;2;urban district
+3405;Wilhelmshaven, Stadt;2;urban district
+3451;Ammerland;2;urban district
+3455;Friesland;2;urban district
+5154;Kleve;2;urban district
+5158;Mettmann;2;urban district
+5162;Rhein-Kreis Neuss;2;urban district
+5166;Viersen;2;urban district
+5170;Wesel;2;urban district
+5334;Städteregion Aachen;2;urban district
+5358;Düren;2;urban district
+5362;Rhein-Erft-Kreis;2;urban district
+5366;Euskirchen;2;urban district
+5370;Heinsberg;2;urban district
+5374;Oberbergischer Kreis;2;urban district
+5378;Rheinisch-Bergischer Kreis;2;urban district
+5382;Rhein-Sieg-Kreis;2;urban district
+5554;Borken;2;urban district
+5558;Coesfeld;2;urban district
+5562;Recklinghausen;2;urban district
+5566;Steinfurt;2;urban district
+5570;Warendorf;2;urban district
+5754;Gütersloh;2;urban district
+5758;Herford;2;urban district
+5766;Lippe;2;urban district
+5770;Minden-Lübbecke;2;urban district
+5774;Paderborn;2;urban district
+5954;Ennepe-Ruhr-Kreis;2;urban district
+5962;Märkischer Kreis;2;urban district
+5966;Olpe;2;urban district
+5970;Siegen-Wittgenstein;2;urban district
+5974;Soest;2;urban district
+5978;Unna;2;urban district
+6431;Bergstraße;2;urban district
+6432;Darmstadt-Dieburg;2;urban district
+6433;Groß-Gerau;2;urban district
+6434;Hochtaunuskreis;2;urban district
+6435;Main-Kinzig-Kreis;2;urban district
+6436;Main-Taunus-Kreis;2;urban district
+6437;Odenwaldkreis;2;urban district
+6438;Offenbach;2;urban district
+6439;Rheingau-Taunus-Kreis;2;urban district
+6440;Wetteraukreis;2;urban district
+6531;Gießen;2;urban district
+6532;Lahn-Dill-Kreis;2;urban district
+6533;Limburg-Weilburg;2;urban district
+6633;Kassel;2;urban district
+7132;Altenkirchen (Westerwald);2;urban district
+7137;Mayen-Koblenz;2;urban district
+7138;Neuwied;2;urban district
+7141;Rhein-Lahn-Kreis;2;urban district
+7143;Westerwaldkreis;2;urban district
+7311;Frankenthal (Pfalz), Stadt;2;urban district
+7312;Kaiserslautern, Stadt;2;urban district
+7313;Landau in der Pfalz, Stadt;2;urban district
+7316;Neustadt an der Weinstraße, Stadt;2;urban district
+7318;Speyer, Stadt;2;urban district
+7319;Worms, Stadt;2;urban district
+7331;Alzey-Worms;2;urban district
+7332;Bad Dürkheim;2;urban district
+7334;Germersheim;2;urban district
+7335;Kaiserslautern;2;urban district
+7337;Südliche Weinstraße;2;urban district
+7338;Rhein-Pfalz-Kreis;2;urban district
+7339;Mainz-Bingen;2;urban district
+8115;Böblingen;2;urban district
+8116;Esslingen;2;urban district
+8117;Göppingen;2;urban district
+8118;Ludwigsburg;2;urban district
+8119;Rems-Murr-Kreis;2;urban district
+8125;Heilbronn;2;urban district
+8135;Heidenheim;2;urban district
+8136;Ostalbkreis;2;urban district
+8211;Baden-Baden, Stadt;2;urban district
+8215;Karlsruhe;2;urban district
+8216;Rastatt;2;urban district
+8226;Rhein-Neckar-Kreis;2;urban district
+8235;Calw;2;urban district
+8236;Enzkreis;2;urban district
+8315;Breisgau-Hochschwarzwald;2;urban district
+8316;Emmendingen;2;urban district
+8317;Ortenaukreis;2;urban district
+8325;Rottweil;2;urban district
+8326;Schwarzwald-Baar-Kreis;2;urban district
+8327;Tuttlingen;2;urban district
+8335;Konstanz;2;urban district
+8336;Lörrach;2;urban district
+8415;Reutlingen;2;urban district
+8416;Tübingen;2;urban district
+8417;Zollernalbkreis;2;urban district
+8435;Bodenseekreis;2;urban district
+8436;Ravensburg;2;urban district
+9163;Rosenheim, Stadt;2;urban district
+9171;Altötting;2;urban district
+9174;Dachau;2;urban district
+9175;Ebersberg;2;urban district
+9178;Freising;2;urban district
+9179;Fürstenfeldbruck;2;urban district
+9184;München;2;urban district
+9187;Rosenheim;2;urban district
+9188;Starnberg;2;urban district
+9572;Erlangen-Höchstadt;2;urban district
+9573;Fürth;2;urban district
+9574;Nürnberger Land;2;urban district
+9661;Aschaffenburg, Stadt;2;urban district
+9671;Aschaffenburg;2;urban district
+9676;Miltenberg;2;urban district
+9679;Würzburg;2;urban district
+9772;Augsburg;2;urban district
+9775;Neu-Ulm;2;urban district
+9776;Lindau (Bodensee);2;urban district
+10041;Regionalverband Saarbrücken;2;urban district
+10042;Merzig-Wadern;2;urban district
+10043;Neunkirchen;2;urban district
+10044;Saarlouis;2;urban district
+10045;Saarpfalz-Kreis;2;urban district
+10046;St. Wendel;2;urban district
+14521;Erzgebirgskreis;2;urban district
+14524;Zwickau;2;urban district
+16052;Gera, Stadt;2;urban district
+16055;Weimar, Stadt;2;urban district
+16071;Weimarer Land;2;urban district
+16076;Greiz;2;urban district
+1001;Flensburg, Stadt;3;rural district
+1004;Neumünster, Stadt;3;rural district
+1051;Dithmarschen;3;rural district
+1053;Herzogtum Lauenburg;3;rural district
+1054;Nordfriesland;3;rural district
+1055;Ostholstein;3;rural district
+1057;Plön;3;rural district
+1058;Rendsburg-Eckernförde;3;rural district
+1059;Schleswig-Flensburg;3;rural district
+1060;Segeberg;3;rural district
+1061;Steinburg;3;rural district
+3151;Gifhorn;3;rural district
+3153;Goslar;3;rural district
+3154;Helmstedt;3;rural district
+3158;Wolfenbüttel;3;rural district
+3251;Diepholz;3;rural district
+3252;Hameln-Pyrmont;3;rural district
+3359;Stade;3;rural district
+3361;Verden;3;rural district
+3401;Delmenhorst, Stadt;3;rural district
+3402;Emden, Stadt;3;rural district
+3452;Aurich;3;rural district
+3453;Cloppenburg;3;rural district
+3457;Leer;3;rural district
+3458;Oldenburg;3;rural district
+3459;Osnabrück;3;rural district
+3460;Vechta;3;rural district
+5762;Höxter;3;rural district
+5958;Hochsauerlandkreis;3;rural district
+6534;Marburg-Biedenkopf;3;rural district
+6631;Fulda;3;rural district
+6634;Schwalm-Eder-Kreis;3;rural district
+7131;Ahrweiler;3;rural district
+7133;Bad Kreuznach;3;rural district
+7140;Rhein-Hunsrück-Kreis;3;rural district
+7235;Trier-Saarburg;3;rural district
+7317;Pirmasens, Stadt;3;rural district
+7320;Zweibrücken, Stadt;3;rural district
+7333;Donnersbergkreis;3;rural district
+7336;Kusel;3;rural district
+7340;Südwestpfalz;3;rural district
+8126;Hohenlohekreis;3;rural district
+8127;Schwäbisch Hall;3;rural district
+8225;Neckar-Odenwald-Kreis;3;rural district
+8237;Freudenstadt;3;rural district
+8337;Waldshut;3;rural district
+8425;Alb-Donau-Kreis;3;rural district
+8426;Biberach;3;rural district
+8437;Sigmaringen;3;rural district
+9172;Berchtesgadener Land;3;rural district
+9176;Eichstätt;3;rural district
+9177;Erding;3;rural district
+9181;Landsberg am Lech;3;rural district
+9182;Miesbach;3;rural district
+9185;Neuburg-Schrobenhausen;3;rural district
+9186;Pfaffenhofen a.d.Ilm;3;rural district
+9190;Weilheim-Schongau;3;rural district
+9261;Landshut, Stadt;3;rural district
+9262;Passau, Stadt;3;rural district
+9273;Kelheim;3;rural district
+9274;Landshut;3;rural district
+9275;Passau;3;rural district
+9279;Dingolfing-Landau;3;rural district
+9375;Regensburg;3;rural district
+9461;Bamberg, Stadt;3;rural district
+9463;Coburg, Stadt;3;rural district
+9464;Hof, Stadt;3;rural district
+9471;Bamberg;3;rural district
+9473;Coburg;3;rural district
+9474;Forchheim;3;rural district
+9475;Hof;3;rural district
+9476;Kronach;3;rural district
+9478;Lichtenfels;3;rural district
+9565;Schwabach, Stadt;3;rural district
+9576;Roth;3;rural district
+9662;Schweinfurt, Stadt;3;rural district
+9675;Kitzingen;3;rural district
+9678;Schweinfurt;3;rural district
+9764;Memmingen, Stadt;3;rural district
+9771;Aichach-Friedberg;3;rural district
+9773;Dillingen a.d.Donau;3;rural district
+9774;Günzburg;3;rural district
+9778;Unterallgäu;3;rural district
+12051;Brandenburg an der Havel, Stadt;3;rural district
+12052;Cottbus, Stadt;3;rural district
+12060;Barnim;3;rural district
+12069;Potsdam-Mittelmark;3;rural district
+12071;Spree-Neiße;3;rural district
+13004;Schwerin, Stadt;3;rural district
+13074;Nordwestmecklenburg;3;rural district
+14522;Mittelsachsen;3;rural district
+14523;Vogtlandkreis;3;rural district
+14625;Bautzen;3;rural district
+14627;Meißen;3;rural district
+14628;Sächsische Schweiz-Osterzgebirge;3;rural district
+14729;Leipzig;3;rural district
+15001;Dessau-Roßlau, Stadt;3;rural district
+15081;Altmarkkreis Salzwedel;3;rural district
+15082;Anhalt-Bitterfeld;3;rural district
+15084;Burgenlandkreis;3;rural district
+15085;Harz;3;rural district
+15088;Saalekreis;3;rural district
+15089;Salzlandkreis;3;rural district
+16061;Eichsfeld;3;rural district
+16067;Gotha;3;rural district
+16074;Saale-Holzland-Kreis;3;rural district
+16077;Altenburger Land;3;rural district
+3155;Northeim;3;rural district
+3255;Holzminden;3;rural district
+3256;Nienburg (Weser);3;rural district
+3351;Celle;3;rural district
+3352;Cuxhaven;3;rural district
+3354;Lüchow-Dannenberg;3;rural district
+3355;Lüneburg;3;rural district
+3357;Rotenburg (Wümme);3;rural district
+3358;Heidekreis;3;rural district
+3360;Uelzen;3;rural district
+3454;Emsland;3;rural district
+3456;Grafschaft Bentheim;3;rural district
+3461;Wesermarsch;3;rural district
+3462;Wittmund;3;rural district
+6535;Vogelsbergkreis;3;rural district
+6632;Hersfeld-Rotenburg;3;rural district
+6635;Waldeck-Frankenberg;3;rural district
+6636;Werra-Meißner-Kreis;3;rural district
+7134;Birkenfeld;3;rural district
+7135;Cochem-Zell;3;rural district
+7231;Bernkastel-Wittlich;3;rural district
+7232;Eifelkreis Bitburg-Prüm;3;rural district
+7233;Vulkaneifel;3;rural district
+8128;Main-Tauber-Kreis;3;rural district
+9173;Bad Tölz-Wolfratshausen;3;rural district
+9180;Garmisch-Partenkirchen;3;rural district
+9183;Mühldorf a.Inn;3;rural district
+9189;Traunstein;3;rural district
+9263;Straubing, Stadt;3;rural district
+9271;Deggendorf;3;rural district
+9272;Freyung-Grafenau;3;rural district
+9276;Regen;3;rural district
+9277;Rottal-Inn;3;rural district
+9278;Straubing-Bogen;3;rural district
+9361;Amberg, Stadt;3;rural district
+9363;Weiden i.d.OPf., Stadt;3;rural district
+9371;Amberg-Sulzbach;3;rural district
+9372;Cham;3;rural district
+9373;Neumarkt i.d.OPf.;3;rural district
+9374;Neustadt a.d.Waldnaab;3;rural district
+9376;Schwandorf;3;rural district
+9377;Tirschenreuth;3;rural district
+9462;Bayreuth, Stadt;3;rural district
+9472;Bayreuth;3;rural district
+9477;Kulmbach;3;rural district
+9479;Wunsiedel i.Fichtelgebirge;3;rural district
+9561;Ansbach, Stadt;3;rural district
+9571;Ansbach;3;rural district
+9575;Neustadt a.d.Aisch-Bad Windsheim;3;rural district
+9577;Weißenburg-Gunzenhausen;3;rural district
+9672;Bad Kissingen;3;rural district
+9673;Rhön-Grabfeld;3;rural district
+9674;Haßberge;3;rural district
+9677;Main-Spessart;3;rural district
+9762;Kaufbeuren, Stadt;3;rural district
+9763;Kempten (Allgäu), Stadt;3;rural district
+9777;Ostallgäu;3;rural district
+9779;Donau-Ries;3;rural district
+9780;Oberallgäu;3;rural district
+12053;Frankfurt (Oder), Stadt;3;rural district
+12061;Dahme-Spreewald;3;rural district
+12062;Elbe-Elster;3;rural district
+12063;Havelland;3;rural district
+12064;Märkisch-Oderland;3;rural district
+12065;Oberhavel;3;rural district
+12066;Oberspreewald-Lausitz;3;rural district
+12067;Oder-Spree;3;rural district
+12068;Ostprignitz-Ruppin;3;rural district
+12070;Prignitz;3;rural district
+12072;Teltow-Fläming;3;rural district
+12073;Uckermark;3;rural district
+13071;Mecklenburgische Seenplatte;3;rural district
+13072;Landkreis Rostock;3;rural district
+13073;Vorpommern-Rügen;3;rural district
+13075;Vorpommern-Greifswald;3;rural district
+13076;Ludwigslust-Parchim;3;rural district
+14626;Görlitz;3;rural district
+14730;Nordsachsen;3;rural district
+15083;Börde;3;rural district
+15086;Jerichower Land;3;rural district
+15087;Mansfeld-Südharz;3;rural district
+15090;Stendal;3;rural district
+15091;Wittenberg;3;rural district
+16054;Suhl, Stadt;3;rural district
+16056;Eisenach, Stadt;3;rural district
+16062;Nordhausen;3;rural district
+16063;Wartburgkreis;3;rural district
+16064;Unstrut-Hainich-Kreis;3;rural district
+16065;Kyffhäuserkreis;3;rural district
+16066;Schmalkalden-Meiningen;3;rural district
+16068;Sömmerda;3;rural district
+16069;Hildburghausen;3;rural district
+16070;Ilm-Kreis;3;rural district
+16072;Sonneberg;3;rural district
+16073;Saalfeld-Rudolstadt;3;rural district
+16075;Saale-Orla-Kreis;3;rural district
